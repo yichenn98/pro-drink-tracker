@@ -7,7 +7,7 @@ interface StatCardProps {
   unit: string;
   bgColor: string;
   textColor: string;
-  onClick?: () => void; // ✅ 新增
+  onClick?: () => void;
 }
 
 const StatCard: React.FC<StatCardProps> = ({
@@ -31,26 +31,43 @@ const StatCard: React.FC<StatCardProps> = ({
         if (!clickable) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onClick();
+          onClick?.();
         }
       }}
-      className={[
-        "p-8 rounded-[2.5rem] card-shadow flex flex-col justify-between aspect-[1.1/1]",
-        "transition-all hover:scale-[1.05] hover:shadow-lg group",
-        clickable ? "cursor-pointer active:scale-95" : ""
-      ].join(' ')}
+      className={`
+        p-8
+        rounded-[2.5rem]
+        card-shadow
+        flex flex-col
+        justify-between
+        aspect-square
+        transition-all
+        hover:scale-[1.05]
+        hover:shadow-lg
+        group
+        ${clickable ? 'cursor-pointer active:scale-95' : ''}
+      `}
     >
       <div>
-        <p className="text-[10px] font-black tracking-[0.25em] opacity-40 uppercase mb-1">{label}</p>
-        <p className="text-base font-bold text-stone-600 opacity-90">{subLabel}</p>
+        <p className="text-[10px] font-black tracking-[0.25em] opacity-40 uppercase mb-1">
+          {label}
+        </p>
+        <p className="text-base font-bold text-stone-600 opacity-90">
+          {subLabel}
+        </p>
       </div>
 
-      <div className="flex items-baseline space-x-2 mt-auto">
-        <span className={`text-4xl font-black tracking-tighter ${textColor}`}>{value}</span>
-        <span className={`text-sm opacity-60 font-black ${textColor}`}>{unit}</span>
+      <div className="mt-auto flex items-baseline space-x-2">
+        <span className={`text-4xl font-black tracking-tighter ${textColor}`}>
+          {value}
+        </span>
+        <span className={`text-sm opacity-60 font-black ${textColor}`}>
+          {unit}
+        </span>
       </div>
     </div>
   );
 };
 
 export default StatCard;
+
