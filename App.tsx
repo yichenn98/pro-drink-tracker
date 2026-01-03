@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { DrinkRecord } from './types';
 import { calculateStats, getFormattedDate, getTopFrequency, parseDateString } from './utils';
@@ -25,6 +24,8 @@ const Icons = {
 
 const DEFAULT_SHOPS = ['50嵐', '一沐日', '五桐號', '迷客夏'];
 
+type DetailType = 'MONTHLY_DOSE' | 'MONTHLY_FEE' | 'ANNUAL_DOSE' | 'ANNUAL_FEE';
+
 const App: React.FC = () => {
   const [records, setRecords] = useState<DrinkRecord[]>(() => {
     const saved = localStorage.getItem('drink_records_2026');
@@ -40,6 +41,9 @@ const App: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(getFormattedDate(new Date()));
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [analyticsType, setAnalyticsType] = useState<'shop' | 'item' | null>(null);
+
+  // ✅ 新增：四格明細的彈窗狀態
+  const [detailType, setDetailType] = useState<DetailType | null>(null);
 
   useEffect(() => {
     localStorage.setItem('drink_records_2026', JSON.stringify(records));
@@ -75,11 +79,11 @@ const App: React.FC = () => {
   const addRecord = (newDrink: Omit<DrinkRecord, 'id' | 'date'>) => {
     if (!selectedDate) return;
     const record: DrinkRecord = { ...newDrink, id: crypto.randomUUID(), date: selectedDate };
-    
+
     if (!shops.includes(newDrink.shop)) {
       setShops(prev => [...prev, newDrink.shop]);
     }
-    
+
     setRecords(prev => [...prev, record]);
     setIsFormOpen(false);
   };
@@ -103,12 +107,51 @@ const App: React.FC = () => {
     dot: '#A8B8A8'
   };
 
+  // ✅ 新增：當月/當年明細資料（用 currentViewDate 決定範圍）
+  const monthlyRecords = useMemo(() => {
+    const y = currentViewDate.getFullYear();
+    const m = currentViewDate.getMonth();
+    return records.filter(r => {
+      const d = new Date(parseDateString(r.date));
+      return d.getFullYear() === y && d.getMonth() === m;
+    });
+  }, [records, currentViewDate]);
+
+  const annualRecords = useMemo(() => {
+    const y = currentViewDate.getFullYear();
+    return records.filter(r => new Date(parseDateString(r.date)).getFullYear() === y);
+  }, [records, currentViewDate]);
+
+  const detailConfig = useMemo(() => {
+    if (!detailType) return null;
+
+    const isMonthly = detailType.startsWith('MONTHLY');
+    const scopeRecords = isMonthly ? monthlyRecords : annualRecords;
+
+    const titleMap: Record<DetailType, string> = {
+      MONTHLY_DOSE: '當月劑量明細',
+      MONTHLY_FEE: '當月診療費明細',
+      ANNUAL_DOSE: '年度劑量明細',
+      ANNUAL_FEE: '年度診療費明細'
+    };
+
+    const totalCost = Math.round(scopeRecords.reduce((acc, r) => acc + (Number(r.price) || 0), 0));
+
+    return {
+      title: titleMap[detailType],
+      records: scopeRecords,
+      summary: isMonthly
+        ? `${monthLabel}｜共 ${scopeRecords.length} 杯｜總花費 $${totalCost}`
+        : `${currentViewDate.getFullYear()}｜共 ${scopeRecords.length} 杯｜總花費 $${totalCost}`
+    };
+  }, [detailType, monthlyRecords, annualRecords, monthLabel, currentViewDate]);
+
   return (
     <div className="max-w-xl mx-auto px-6 pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(2rem+env(safe-area-inset-bottom))] space-y-12">
       <div className="flex justify-center">
-         <div className="bg-stone-600 px-14 py-6 rounded-full shadow-xl border border-stone-500 flex items-center space-x-3 transition-transform hover:scale-105 active:scale-95">
-           <span className="text-xl font-black text-white tracking-[0.25em]">手搖成癮患者 🥤</span>
-         </div>
+        <div className="bg-stone-600 px-14 py-6 rounded-full shadow-xl border border-stone-500 flex items-center space-x-3 transition-transform hover:scale-105 active:scale-95">
+          <span className="text-xl font-black text-white tracking-[0.25em]">手搖成癮患者 🥤</span>
+        </div>
       </div>
 
       <div className="space-y-2 px-2">
@@ -116,12 +159,44 @@ const App: React.FC = () => {
         <h2 className="text-2xl font-black text-stone-700 tracking-tight">2026 手搖成癮病歷表 📋</h2>
       </div>
 
-      {/* 數據統計區 */}
+      {/* 數據統計區（✅ 加上 onClick 進明細） */}
       <section className="grid grid-cols-2 gap-6">
-        <StatCard label="Monthly Dose" subLabel="當月劑量" value={stats.monthlyCount} unit="杯" bgColor={colors.blue} textColor="text-stone-700" />
-        <StatCard label="Monthly Fee" subLabel="當月診療費" value={`$${stats.monthlyCost}`} unit="" bgColor={colors.purple} textColor="text-stone-700" />
-        <StatCard label="Annual Dose" subLabel="年度劑量" value={stats.annualCount} unit="杯" bgColor={colors.sage} textColor="text-stone-700" />
-        <StatCard label="Annual Fee" subLabel="年度診療費" value={`$${stats.annualCost}`} unit="" bgColor={colors.pink} textColor="text-stone-700" />
+        <StatCard
+          label="Monthly Dose"
+          subLabel="當月劑量"
+          value={stats.monthlyCount}
+          unit="杯"
+          bgColor={colors.blue}
+          textColor="text-stone-700"
+          onClick={() => setDetailType('MONTHLY_DOSE')}
+        />
+        <StatCard
+          label="Monthly Fee"
+          subLabel="當月診療費"
+          value={`$${stats.monthlyCost}`}
+          unit=""
+          bgColor={colors.purple}
+          textColor="text-stone-700"
+          onClick={() => setDetailType('MONTHLY_FEE')}
+        />
+        <StatCard
+          label="Annual Dose"
+          subLabel="年度劑量"
+          value={stats.annualCount}
+          unit="杯"
+          bgColor={colors.sage}
+          textColor="text-stone-700"
+          onClick={() => setDetailType('ANNUAL_DOSE')}
+        />
+        <StatCard
+          label="Annual Fee"
+          subLabel="年度診療費"
+          value={`$${stats.annualCost}`}
+          unit=""
+          bgColor={colors.pink}
+          textColor="text-stone-700"
+          onClick={() => setDetailType('ANNUAL_FEE')}
+        />
       </section>
 
       {/* 日曆區 */}
@@ -157,8 +232,8 @@ const App: React.FC = () => {
                   {day}
                 </span>
                 <div className="flex space-x-1 mt-2 h-4 items-center">
-                  {dayRecs.length >= 1 && <div style={{backgroundColor: colors.dot}} className="w-1.5 h-1.5 rounded-full"></div>}
-                  {dayRecs.length >= 2 && <div style={{backgroundColor: colors.dot}} className="w-1.5 h-1.5 rounded-full"></div>}
+                  {dayRecs.length >= 1 && <div style={{ backgroundColor: colors.dot }} className="w-1.5 h-1.5 rounded-full"></div>}
+                  {dayRecs.length >= 2 && <div style={{ backgroundColor: colors.dot }} className="w-1.5 h-1.5 rounded-full"></div>}
                 </div>
               </button>
             );
@@ -170,10 +245,10 @@ const App: React.FC = () => {
       {selectedDate && (
         <div className="animate-in slide-in-from-bottom-8 duration-700 space-y-8">
           <div className="bg-stone-700 p-10 rounded-[3.5rem] card-shadow text-white relative overflow-hidden">
-             <p className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-50 mb-2">Clinical Diagnostic</p>
-             <h4 className="text-3xl font-black tracking-tight">
-               {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' })}
-             </h4>
+            <p className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-50 mb-2">Clinical Diagnostic</p>
+            <h4 className="text-3xl font-black tracking-tight">
+              {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' })}
+            </h4>
           </div>
 
           <div className="space-y-6">
@@ -183,18 +258,18 @@ const App: React.FC = () => {
                   <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">Prescription {i + 1}</p>
                   <h5 className="font-black text-stone-700 text-xl">{r.shop} {r.item}</h5>
                   <p className="text-sm text-stone-500 font-bold">
-                    甜度：{r.sweetness}；冰塊：{r.ice}
+                    {r.sweetness} / {r.ice}
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
-                   <span className="text-3xl font-black text-stone-700 tracking-tighter">${r.price}</span>
-                   <button onClick={(e) => { e.stopPropagation(); removeRecord(r.id); }} className="p-3 text-stone-200 hover:text-rose-400 transition-colors"><Icons.Trash /></button>
+                  <span className="text-3xl font-black text-stone-700 tracking-tighter">${r.price}</span>
+                  <button onClick={(e) => { e.stopPropagation(); removeRecord(r.id); }} className="p-3 text-stone-200 hover:text-rose-400 transition-colors"><Icons.Trash /></button>
                 </div>
               </div>
             ))}
 
             {getRecordsForDate(selectedDate).length < 2 && (
-              <button 
+              <button
                 onClick={() => setIsFormOpen(true)}
                 className="w-full py-10 border-2 border-dashed border-stone-200 rounded-[3rem] text-stone-400 flex items-center justify-center space-x-4 hover:border-stone-400 hover:text-stone-700 transition-all bg-white/40"
               >
@@ -220,6 +295,44 @@ const App: React.FC = () => {
         </button>
       </section>
 
+      {/* ✅ 彈出視窗：四格明細 */}
+      {detailConfig && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
+          <div className="w-full max-w-lg bg-white rounded-t-[3.5rem] sm:rounded-[3.5rem] p-10 card-shadow max-h-[80vh] flex flex-col animate-in zoom-in duration-200">
+            <div className="flex justify-between items-center mb-6 shrink-0">
+              <div className="pr-4">
+                <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.4em]">Details</p>
+                <h3 className="text-2xl font-black text-stone-700">{detailConfig.title}</h3>
+                <p className="text-xs font-bold text-stone-400 mt-2">{detailConfig.summary}</p>
+              </div>
+              <button onClick={() => setDetailType(null)} className="p-2 text-stone-300"><Icons.Close /></button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2 pb-2">
+              {detailConfig.records.length === 0 ? (
+                <div className="p-6 bg-stone-50 rounded-[2rem] text-stone-400 font-bold">
+                  尚無紀錄
+                </div>
+              ) : (
+                detailConfig.records
+                  .slice()
+                  .sort((a, b) => parseDateString(b.date) - parseDateString(a.date))
+                  .map((r) => (
+                    <div key={r.id} className="flex items-center justify-between p-6 bg-stone-50 rounded-[2rem]">
+                      <div className="space-y-1">
+                        <div className="text-[10px] font-black text-stone-400">{r.date}</div>
+                        <div className="font-black text-stone-700">{r.shop} {r.item}</div>
+                        <div className="text-xs font-bold text-stone-400">{r.sweetness} / {r.ice}</div>
+                      </div>
+                      <div className="font-black text-stone-700">${Number(r.price) || 0}</div>
+                    </div>
+                  ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 彈出視窗：統計資料 */}
       {analyticsType && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/40 backdrop-blur-xl p-8">
@@ -244,9 +357,9 @@ const App: React.FC = () => {
       {isFormOpen && (
         <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
           <div className="w-full max-w-lg animate-in slide-in-from-bottom duration-500">
-            <RecordForm 
-              onSave={addRecord} 
-              onCancel={() => setIsFormOpen(false)} 
+            <RecordForm
+              onSave={addRecord}
+              onCancel={() => setIsFormOpen(false)}
               existingCount={getRecordsForDate(selectedDate || '').length}
               availableShops={shops}
             />
