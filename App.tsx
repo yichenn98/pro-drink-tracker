@@ -22,6 +22,45 @@ const Icons = {
   )
 };
 
+const SugarIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="text-stone-400"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 2C12 2 6 9 6 13.5C6 17.0899 8.91015 20 12.5 20C16.0899 20 19 17.0899 19 13.5C19 9 12 2 12 2Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const IceIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="text-stone-400"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 2v20M4 6l16 12M20 6L4 18"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+
+
 const DEFAULT_SHOPS = ['50嵐', '一沐日', '五桐號', '迷客夏'];
 
 type DetailType = 'MONTHLY_DOSE' | 'MONTHLY_FEE' | 'ANNUAL_DOSE' | 'ANNUAL_FEE';
@@ -92,12 +131,17 @@ const App: React.FC = () => {
   const getRecordsForDate = (dateStr: string) => records.filter(r => r.date === dateStr);
 
   const handleDateClick = (dateStr: string) => {
-    setSelectedDate(dateStr);
-    const dayRecs = getRecordsForDate(dateStr);
-    if (dayRecs.length < 2) {
-      setIsFormOpen(true);
-    }
-  };
+  setSelectedDate(dateStr);
+  const dayRecs = getRecordsForDate(dateStr);
+
+  // ✅ 只有「完全沒紀錄」才自動開新增
+  if (dayRecs.length === 0) {
+    setIsFormOpen(true);
+  } else {
+    setIsFormOpen(false); // 可選：確保不會維持開著
+  }
+};
+
 
   const colors = {
     blue: '#DCE4E9',
@@ -257,9 +301,24 @@ const App: React.FC = () => {
                 <div className="space-y-1.5 flex-1 pr-4">
                   <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">Prescription {i + 1}</p>
                   <h5 className="font-black text-stone-700 text-xl">{r.shop} {r.item}</h5>
-                  <p className="text-sm text-stone-500 font-bold">
-                    {r.sweetness} / {r.ice}
-                  </p>
+                 <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200">
+  <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
+    <span className="text-stone-400">
+      <SugarIcon />
+    </span>
+    {r.sweetness}
+  </span>
+
+  <span className="text-stone-400 font-black">/</span>
+
+  <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
+    <span className="text-stone-400">
+      <IceIcon />
+    </span>
+    {r.ice}
+  </span>
+</div>
+
                 </div>
                 <div className="flex items-center space-x-4">
                   <span className="text-3xl font-black text-stone-700 tracking-tighter">${r.price}</span>
@@ -267,18 +326,19 @@ const App: React.FC = () => {
                 </div>
               </div>
             ))}
+          {getRecordsForDate(selectedDate).length > 0 && (
+          <button
+  onClick={() => setIsFormOpen(true)}
+  className="w-full py-10 border-2 border-dashed border-stone-200 rounded-[3rem] text-stone-400 flex items-center justify-center space-x-4 hover:border-stone-400 hover:text-stone-700 transition-all bg-white/40"
+>
+  <div className="p-3 rounded-full bg-stone-100">
+    <Icons.Plus />
+  </div>
+  <span className="font-black text-sm tracking-[0.3em] uppercase">
+    Add Prescription
+  </span>
+</button>
 
-            {getRecordsForDate(selectedDate).length < 2 && (
-              <button
-                onClick={() => setIsFormOpen(true)}
-                className="w-full py-10 border-2 border-dashed border-stone-200 rounded-[3rem] text-stone-400 flex items-center justify-center space-x-4 hover:border-stone-400 hover:text-stone-700 transition-all bg-white/40"
-              >
-                <div className="p-3 rounded-full bg-stone-100">
-                  <Icons.Plus />
-                </div>
-                <span className="font-black text-sm tracking-[0.3em] uppercase">Add Prescription</span>
-              </button>
-            )}
           </div>
         </div>
       )}
