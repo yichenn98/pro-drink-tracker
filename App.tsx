@@ -401,12 +401,6 @@ const App: React.FC = () => {
             共 {getRecordsForDate(selectedDate).length} 杯
           </p>
         </div>
-<button
-  onClick={() => setIsFormOpen(false)}
-  className="p-2 text-stone-300"
->
-  <Icons.Close />
-</button>
 
       
       </div>
