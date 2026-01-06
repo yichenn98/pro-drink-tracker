@@ -320,24 +320,9 @@ const App: React.FC = () => {
                     {r.shop} {r.item}
                   </h5>
 
-                  <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-stone-100">
-                    <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
-                      <span className="text-stone-400">
-                        <SugarIcon />
-                      </span>
-                      <span>{r.sweetness}</span>
-                    </span>
-
-                    <span className="text-stone-400 font-black">/</span>
-
-                    <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
-                      <span className="text-stone-400">
-                        <IceIcon />
-                      </span>
-                      <span>{r.ice}</span>
-                    </span>
-                  </div>
-                </div>
+                 <p className="mt-2 text-xs font-bold text-stone-400 tracking-wide">
+  {r.sweetness} / {r.ice}
+</p>
 
                 <div className="flex items-center space-x-4">
                   <span className="text-3xl font-black text-stone-700 tracking-tighter">
