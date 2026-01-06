@@ -414,23 +414,25 @@ const App: React.FC = () => {
                   <button onClick={(e) => { e.stopPropagation(); removeRecord(r.id); }} className="p-3 text-stone-200 hover:text-rose-400 transition-colors"><Icons.Trash /></button>
                 </div>
               </div>
-            ))}
-          {getRecordsForDate(selectedDate).length > 0 && (
-          <button
-  onClick={() => setIsFormOpen(true)}
-  className="w-full py-10 border-2 border-dashed border-stone-200 rounded-[3rem] text-stone-400 flex items-center justify-center space-x-4 hover:border-stone-400 hover:text-stone-700 transition-all bg-white/40"
->
-  <div className="p-3 rounded-full bg-stone-100">
-    <Icons.Plus />
-  </div>
-  <span className="font-black text-sm tracking-[0.3em] uppercase">
-    Add Prescription
-  </span>
-</button>
-
+                       ))}
+            
+            {getRecordsForDate(selectedDate).length > 0 && (
+              <button
+                onClick={() => setIsFormOpen(true)}
+                className="w-full py-10 border-2 border-dashed border-stone-200 rounded-[3rem] text-stone-400 flex items-center justify-center space-x-4 hover:border-stone-400 hover:text-stone-700 transition-all bg-white/40"
+              >
+                <div className="p-3 rounded-full bg-stone-100">
+                  <Icons.Plus />
+                </div>
+                <span className="font-black text-sm tracking-[0.3em] uppercase">
+                  Add Prescription
+                </span>
+              </button>
+            )}
           </div>
         </div>
       )}
+
 
       {/* 底部按鈕區 */}
       <section className="grid grid-cols-2 gap-6">
