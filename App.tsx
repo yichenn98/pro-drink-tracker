@@ -300,7 +300,8 @@ const App: React.FC = () => {
       {/* 底部按鈕區 */}
       <section className="grid grid-cols-2 gap-6">
         <button onClick={() => setAnalyticsType('shop')} 
-          style={{ backgroundColor: colors.blue }}className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 hover:brightness-[1.03]
+          style={{ backgroundColor: colors.blue }}
+          className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 hover:brightness-[1.03]
  space-y-3 text-left transition-all active:scale-95">
           <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">Clinic Favorite</p>
           <p className="text-lg font-black text-stone-600 truncate">{favoriteShop.name}</p>
@@ -410,7 +411,6 @@ const App: React.FC = () => {
           </p>
         </div>
 
-        {/* ✅ 叉叉：關 Day Modal */}
         <button
           onClick={() => setIsDayOpen(false)}
           className="p-2 text-stone-300 hover:text-stone-600 transition-colors"
@@ -456,7 +456,7 @@ const App: React.FC = () => {
         )}
       </div>
 
-      {/* ✅ Footer actions：按 ADD 才開新增視窗 */}
+      {/* Footer actions */}
       <div className="pt-6">
         <button
           onClick={() => setIsFormOpen(true)}
@@ -467,26 +467,6 @@ const App: React.FC = () => {
           </span>
           <span className="font-black text-sm tracking-[0.25em] uppercase">Add</span>
         </button>
-      </div>
-    </div>
-  </div>
-)}
-
-
-      {/* Footer actions */}
-      <div className="pt-6">
-       <button
-  onClick={() => setIsFormOpen(true)}
-  className="w-full py-6 border-2 border-dashed ..."
->
-  <span className="p-2 rounded-full bg-stone-100">
-    <Icons.Plus />
-  </span>
-  <span className="font-black text-sm tracking-[0.25em] uppercase">
-    Add
-  </span>
-</button>
-
       </div>
     </div>
   </div>
