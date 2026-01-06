@@ -385,26 +385,48 @@ const App: React.FC = () => {
 
 {/* ✅ 彈出視窗：當天紀錄 */}
 {isDayOpen && selectedDate && (
-  <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
-    <div className="w-full max-w-lg bg-white rounded-t-[3.5rem] sm:rounded-[3.5rem] p-10 card-shadow max-h-[80vh] flex flex-col animate-in zoom-in duration-200">
-      {/* Header */}
-      <div className="flex justify-between items-start mb-6 shrink-0">
-        <div className="pr-4">
-          <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.4em]">Daily Records</p>
-          <h3 className="text-2xl font-black text-stone-700">
-            {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', {
-              month: 'long',
-              day: 'numeric',
-              weekday: 'long'
-            })}
-          </h3>
-          <p className="text-xs font-bold text-stone-400 mt-2">
-            共 {getRecordsForDate(selectedDate).length} 杯
-          </p>
-        </div>
+ <div
+  className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8"
+  onClick={() => setIsDayOpen(false)}
+>
+  <div
+    className="w-full max-w-lg bg-white rounded-t-[3.5rem] sm:rounded-[3.5rem] p-10 card-shadow max-h-[80vh] flex flex-col animate-in zoom-in duration-200"
+    onClick={(e) => e.stopPropagation()}
+  >
 
-      
-      </div>
+      {/* Header */}
+      {/* Header */}
+<div className="flex justify-between items-start mb-6 shrink-0">
+  <div className="pr-4">
+    <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.4em]">
+      Daily Records
+    </p>
+    <h3 className="text-2xl font-black text-stone-700">
+      {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', {
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      })}
+    </h3>
+    <p className="text-xs font-bold text-stone-400 mt-2">
+      共 {getRecordsForDate(selectedDate).length} 杯
+    </p>
+  </div>
+
+  <button
+    type="button"
+    onClick={() => {
+  setIsDayOpen(false);
+  setIsFormOpen(true);
+}}
+
+    className="p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition"
+    aria-label="Close"
+  >
+    <Icons.Close />
+  </button>
+</div>
+
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2 pb-2">
