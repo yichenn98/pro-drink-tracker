@@ -230,13 +230,14 @@ const RecordForm: React.FC<RecordFormProps> = ({
         >
           Save
         </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="w-full py-5 text-stone-400 font-bold text-xs uppercase tracking-[0.4em] hover:text-stone-600 transition-colors"
-        >
-          Cancel
-        </button>
+       <button
+  type="button"
+  onClick={onCancel}
+  className="absolute top-6 right-6 p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition"
+>
+  <svg ... /> {/* 或抽成共用 icon */}
+</button>
+
       </div>
     </form>
   );
