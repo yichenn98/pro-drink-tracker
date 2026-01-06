@@ -1,3 +1,4 @@
+import { SweetIcon, IceIcon } from './FormIcons';
 import React, { useState } from 'react';
 import { DrinkRecord, IceLevel, SweetnessLevel } from '../types';
 import { ICE_LEVELS, SWEETNESS_LEVELS } from '../constants';
