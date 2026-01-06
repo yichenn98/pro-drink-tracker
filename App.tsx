@@ -289,7 +289,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* 診斷詳情 */}
+           {/* 診斷詳情 */}
       {selectedDate && (
         <div className="animate-in slide-in-from-bottom-8 duration-700 space-y-8">
           <div className="bg-stone-700 p-10 rounded-[3.5rem] card-shadow text-white relative overflow-hidden">
@@ -373,6 +373,7 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
+
 
 
           <div className="space-y-6">
