@@ -375,10 +375,10 @@ const App: React.FC = () => {
           <div className="w-full max-w-lg animate-in slide-in-from-bottom duration-500">
             <RecordForm
               onSave={addRecord}
-              onCancel={() => setIsFormOpen(false)}
-              existingCount={getRecordsForDate(selectedDate || '').length}
-              availableShops={shops}
-            />
+              onCancel={() => setIsFormOpen(false)} // 或 setDayOpen(false) 看你用哪個 state
+  existingCount={0}
+  availableShops={shops}
+/>
           </div>
         </div>
       )}
