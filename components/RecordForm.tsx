@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DrinkRecord, IceLevel, SweetnessLevel } from '../types';
 import { ICE_LEVELS, SWEETNESS_LEVELS } from '../constants';
@@ -10,11 +9,57 @@ interface RecordFormProps {
   availableShops: string[];
 }
 
-const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount, availableShops }) => {
+// 小 icon（輕量，不用額外套件）
+const SugarIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="text-stone-400"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 2C12 2 6 9 6 13.5C6 17.0899 8.91015 20 12.5 20C16.0899 20 19 17.0899 19 13.5C19 9 12 2 12 2Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const IceIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="text-stone-400"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 2v20M4 6l16 12M20 6L4 18"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const RecordForm: React.FC<RecordFormProps> = ({
+  onSave,
+  onCancel,
+  existingCount,
+  availableShops
+}) => {
   const [shop, setShop] = useState('');
   const [item, setItem] = useState('');
-  const [ice, setIce] = useState<IceLevel>('微冰');
-  const [sweetness, setSweetness] = useState<SweetnessLevel>('三分糖');
+
+  // ✅ 新選項建議預設為「固定」，避免預設值不在清單造成 UI 沒有被選中
+  const [ice, setIce] = useState<IceLevel>('固定' as IceLevel);
+  const [sweetness, setSweetness] = useState<SweetnessLevel>('固定' as SweetnessLevel);
+
   const [priceStr, setPriceStr] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,22 +70,37 @@ const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount
       alert('別再喝了！！減肥減肥減肥！！！😤');
     }
 
-    onSave({ 
-      shop, 
-      item, 
-      ice, 
-      sweetness, 
-      price: Number(priceStr) || 0 
+    onSave({
+      shop,
+      item,
+      ice,
+      sweetness,
+      price: Number(priceStr) || 0
     });
   };
 
+  // ✅ 甜度/冰塊按鈕統一尺寸（字 + 框都小一點）
+  const pillBase =
+    'px-3 h-9 min-w-[64px] rounded-xl text-[11px] font-bold tracking-[0.1em] border-2 transition-all flex items-center justify-center';
+  const pillOn = 'bg-stone-600 text-white border-stone-600 shadow-sm';
+  const pillOff = 'bg-white text-stone-500 border-stone-200 hover:border-stone-400';
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-10 bg-white p-12 rounded-[3.5rem] card-shadow border border-stone-100 overflow-hidden max-h-[90vh] overflow-y-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-10 bg-white p-12 rounded-[3.5rem] card-shadow border border-stone-100 overflow-hidden max-h-[90vh] overflow-y-auto"
+    >
       <div className="flex items-center justify-between">
-         <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">Store / 店名</h3>
-         {existingCount > 0 && <span className="text-[10px] bg-stone-200 text-stone-600 px-4 py-1.5 rounded-full font-bold tracking-widest uppercase">Dose 2 🩵</span>}
+        <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
+          Store / 店名
+        </h3>
+        {existingCount > 0 && (
+          <span className="text-[10px] bg-stone-200 text-stone-600 px-4 py-1.5 rounded-full font-bold tracking-widest uppercase">
+            Dose 2 🩵
+          </span>
+        )}
       </div>
-      
+
       <div className="space-y-4">
         <div className="relative">
           <input
@@ -52,21 +112,22 @@ const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount
             placeholder="點選或輸入店名..."
           />
           <datalist id="shop-options">
-            {availableShops.map(s => (
+            {availableShops.map((s) => (
               <option key={s} value={s} />
             ))}
           </datalist>
-          {/* Show all available shops as quick-select buttons */}
+
+          {/* quick-select buttons */}
           <div className="mt-4 flex flex-wrap gap-2 max-h-24 overflow-y-auto pr-2 custom-scrollbar">
-            {availableShops.map(s => (
+            {availableShops.map((s) => (
               <button
                 key={s}
                 type="button"
                 onClick={() => setShop(s)}
                 className={`px-5 py-2 text-[10px] rounded-full border transition-all font-bold tracking-wider ${
-                  shop === s 
-                  ? 'bg-stone-500 text-white border-stone-500 shadow-sm' 
-                  : 'bg-stone-50 text-stone-400 border-stone-100 hover:border-stone-200'
+                  shop === s
+                    ? 'bg-stone-500 text-white border-stone-500 shadow-sm'
+                    : 'bg-stone-50 text-stone-400 border-stone-100 hover:border-stone-200'
                 }`}
               >
                 {s}
@@ -76,7 +137,9 @@ const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount
         </div>
       </div>
 
-      <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">Item / 品項</h3>
+      <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
+        Item / 品項
+      </h3>
       <input
         type="text"
         value={item}
@@ -85,19 +148,22 @@ const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount
         placeholder="藥方品項..."
       />
 
-      <div className="space-y-5">
-        <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">Sugar / 甜度</h3>
-        <div className="flex flex-wrap gap-4">
+      {/* 甜度 */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <SugarIcon />
+          <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
+            Sugar / 甜度
+          </h3>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
           {SWEETNESS_LEVELS.map((level) => (
             <button
               key={level}
               type="button"
-              onClick={() => setSweetness(level)}
-              className={`px-8 py-3 text-xs rounded-full border transition-all font-bold tracking-[0.1em] ${
-                sweetness === level 
-                ? 'bg-stone-600 text-white border-stone-600 shadow-md' 
-                : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
-              }`}
+              onClick={() => setSweetness(level as SweetnessLevel)}
+              className={[pillBase, sweetness === level ? pillOn : pillOff].join(' ')}
             >
               {level}
             </button>
@@ -105,19 +171,22 @@ const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount
         </div>
       </div>
 
-      <div className="space-y-5">
-        <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">Ice / 冰量</h3>
-        <div className="flex flex-wrap gap-4">
+      {/* 冰塊 */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <IceIcon />
+          <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
+            Ice / 冰量
+          </h3>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
           {ICE_LEVELS.map((level) => (
             <button
               key={level}
               type="button"
-              onClick={() => setIce(level)}
-              className={`px-8 py-3 text-xs rounded-full border transition-all font-bold tracking-[0.1em] ${
-                ice === level 
-                ? 'bg-stone-600 text-white border-stone-600 shadow-md' 
-                : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'
-              }`}
+              onClick={() => setIce(level as IceLevel)}
+              className={[pillBase, ice === level ? pillOn : pillOff].join(' ')}
             >
               {level}
             </button>
@@ -127,8 +196,10 @@ const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount
 
       <div className="bg-stone-100/50 p-10 rounded-[3rem] flex justify-between items-center mt-6">
         <div>
-           <p className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.3em] mb-1">Medical Fee</p>
-           <p className="text-base font-bold text-stone-600">診察費</p>
+          <p className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.3em] mb-1">
+            Medical Fee
+          </p>
+          <p className="text-base font-bold text-stone-600">診察費</p>
         </div>
         <div className="flex items-center space-x-4">
           <span className="text-stone-400 font-black text-2xl">$</span>
@@ -162,3 +233,4 @@ const RecordForm: React.FC<RecordFormProps> = ({ onSave, onCancel, existingCount
 };
 
 export default RecordForm;
+
