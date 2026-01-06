@@ -367,7 +367,7 @@ const App: React.FC = () => {
                 </div>
                 <span className="font-black text-sm tracking-[0.3em] uppercase">
                   Add Prescription
-                  )}
+                  
                 </span>
               </button>
             )}
@@ -420,7 +420,7 @@ const App: React.FC = () => {
                 </div>
                 <span className="font-black text-sm tracking-[0.3em] uppercase">
                   Add Prescription
-                  )}
+            
                 </span>
               </button>
             )}
