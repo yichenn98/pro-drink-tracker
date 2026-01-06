@@ -321,9 +321,9 @@ const App: React.FC = () => {
                   </h5>
 
                  <p className="mt-2 text-xs font-bold text-stone-400 tracking-wide">
-  {r.sweetness} / {r.ice}
-</p>
-
+                   {r.sweetness} / {r.ice}
+                </p>
+               </div>
                 <div className="flex items-center space-x-4">
                   <span className="text-3xl font-black text-stone-700 tracking-tighter">
                     ${r.price}
