@@ -81,7 +81,7 @@ const App: React.FC = () => {
   });
 
   const [currentViewDate, setCurrentViewDate] = useState(new Date(2026, 0, 1));
-  const [selectedDate, setSelectedDate] = useState<string | null>(getFormattedDate(new Date()));
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [analyticsType, setAnalyticsType] = useState<'shop' | 'item' | null>(null);
   const [isDayOpen, setIsDayOpen] = useState(false);
@@ -138,9 +138,9 @@ const App: React.FC = () => {
 
   const handleDateClick = (dateStr: string) => {
   setSelectedDate(dateStr);
-     // ✅ 點日期只選日期，順便確保日彈窗不會自己跑出來
+  setIsDayOpen(true);      // ✅ 點日期就打開 Day Modal
+  setIsFormOpen(false);    // ✅ 保險：避免還開著新增表單
 };
-
 
 
   const colors = {
@@ -386,43 +386,39 @@ const App: React.FC = () => {
 
 {/* ✅ 彈出視窗：當天紀錄 */}
 {isDayOpen && selectedDate && (
- <div
-  className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8"
-  onClick={() => setIsDayOpen(false)}
->
   <div
-    className="w-full max-w-lg bg-white rounded-t-[3.5rem] sm:rounded-[3.5rem] p-10 card-shadow max-h-[80vh] flex flex-col animate-in zoom-in duration-200"
-    onClick={(e) => e.stopPropagation()}
+    className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8"
+    onClick={() => setIsDayOpen(false)}
   >
-
+    <div
+      className="w-full max-w-lg bg-white rounded-t-[3.5rem] sm:rounded-[3.5rem] p-10 card-shadow max-h-[80vh] flex flex-col animate-in zoom-in duration-200"
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* Header */}
-      {/* Header */}
-<div className="flex justify-between items-start mb-6 shrink-0">
-  <div className="pr-4">
-    <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.4em]">
-      Daily Records
-    </p>
-    <h3 className="text-2xl font-black text-stone-700">
-      {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', {
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-      })}
-    </h3>
-    <p className="text-xs font-bold text-stone-400 mt-2">
-      共 {getRecordsForDate(selectedDate).length} 杯
-    </p>
-  </div>
+      <div className="flex justify-between items-start mb-6 shrink-0">
+        <div className="pr-4">
+          <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.4em]">Daily Records</p>
+          <h3 className="text-2xl font-black text-stone-700">
+            {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', {
+              month: 'long',
+              day: 'numeric',
+              weekday: 'long'
+            })}
+          </h3>
+          <p className="text-xs font-bold text-stone-400 mt-2">
+            共 {getRecordsForDate(selectedDate).length} 杯
+          </p>
+        </div>
 
-  <button
-    onClick={() => setSelectedDate(null)}
-    className="p-2 text-stone-300 hover:text-stone-600 transition-colors"
-    aria-label="Close"
-  >
-    <Icons.Close />
-  </button>
-</div>
-
+        {/* ✅ 叉叉：關 Day Modal */}
+        <button
+          onClick={() => setIsDayOpen(false)}
+          className="p-2 text-stone-300 hover:text-stone-600 transition-colors"
+          aria-label="Close"
+        >
+          <Icons.Close />
+        </button>
+      </div>
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2 pb-2">
@@ -459,6 +455,23 @@ const App: React.FC = () => {
           ))
         )}
       </div>
+
+      {/* ✅ Footer actions：按 ADD 才開新增視窗 */}
+      <div className="pt-6">
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="w-full py-6 border-2 border-dashed border-stone-200 rounded-[2.5rem] text-stone-500 flex items-center justify-center gap-3 hover:border-stone-400 hover:text-stone-700 transition-all bg-white"
+        >
+          <span className="p-2 rounded-full bg-stone-100">
+            <Icons.Plus />
+          </span>
+          <span className="font-black text-sm tracking-[0.25em] uppercase">Add</span>
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Footer actions */}
       <div className="pt-6">
