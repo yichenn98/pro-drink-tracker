@@ -375,60 +375,6 @@ const App: React.FC = () => {
         </div>
       )}
 
-
-
-          <div className="space-y-6">
-            {getRecordsForDate(selectedDate).map((r, i) => (
-              <div key={r.id} className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 flex justify-between items-center group transition-all">
-                <div className="space-y-1.5 flex-1 pr-4">
-                  <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">Prescription {i + 1}</p>
-                  <h5 className="font-black text-stone-700 text-xl">{r.shop} {r.item}</h5>
-                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200">
-  <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
-    <span className="text-stone-400">
-      <SugarIcon />
-    </span>
-    {r.sweetness}
-  </span>
-
-  <span className="text-stone-400 font-black">/</span>
-
-  <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
-    <span className="text-stone-400">
-      <IceIcon />
-    </span>
-    {r.ice}
-  </span>
-</div>
-
-
-                </div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-3xl font-black text-stone-700 tracking-tighter">${r.price}</span>
-                  <button onClick={(e) => { e.stopPropagation(); removeRecord(r.id); }} className="p-3 text-stone-200 hover:text-rose-400 transition-colors"><Icons.Trash /></button>
-                </div>
-              </div>
-                       ))}
-            
-            {getRecordsForDate(selectedDate).length > 0 && (
-              <button
-                onClick={() => setIsFormOpen(true)}
-                className="w-full py-10 border-2 border-dashed border-stone-200 rounded-[3rem] text-stone-400 flex items-center justify-center space-x-4 hover:border-stone-400 hover:text-stone-700 transition-all bg-white/40"
-              >
-                <div className="p-3 rounded-full bg-stone-100">
-                  <Icons.Plus />
-                </div>
-                <span className="font-black text-sm tracking-[0.3em] uppercase">
-                  Add Prescription
-            
-                </span>
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-
       {/* 底部按鈕區 */}
       <section className="grid grid-cols-2 gap-6">
         <button onClick={() => setAnalyticsType('shop')} className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 space-y-3 text-left transition-all active:scale-95">
