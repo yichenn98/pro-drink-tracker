@@ -305,7 +305,7 @@ const App: React.FC = () => {
                 <div className="space-y-1.5 flex-1 pr-4">
                   <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">Prescription {i + 1}</p>
                   <h5 className="font-black text-stone-700 text-xl">{r.shop} {r.item}</h5>
-                 <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200">
+                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200">
   <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
     <span className="text-stone-400">
       <SugarIcon />
@@ -322,6 +322,7 @@ const App: React.FC = () => {
     {r.ice}
   </span>
 </div>
+
 
                 </div>
                 <div className="flex items-center space-x-4">
