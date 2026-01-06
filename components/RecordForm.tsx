@@ -91,6 +91,15 @@ const RecordForm: React.FC<RecordFormProps> = ({
       onSubmit={handleSubmit}
       className="space-y-10 bg-white p-12 rounded-[3.5rem] card-shadow border border-stone-100 overflow-hidden max-h-[90vh] overflow-y-auto"
     >
+      {/* ✕ 關閉按鈕 */}
+  <button
+    type="button"
+    onClick={onCancel}
+    className="absolute top-6 right-6 p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition"
+    aria-label="Close"
+  >
+    ✕
+  </button>
       <div className="flex items-center justify-between">
         <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
           Store / 店名
