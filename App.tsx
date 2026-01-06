@@ -138,8 +138,9 @@ const App: React.FC = () => {
 
   const handleDateClick = (dateStr: string) => {
   setSelectedDate(dateStr);
-  setIsDayOpen(true);
+  setIsDayOpen(true);   // ✅ 點日期只選日期，順便確保日彈窗不會自己跑出來
 };
+
 
 
   const colors = {
@@ -384,7 +385,7 @@ const App: React.FC = () => {
 )}
 
 {/* ✅ 彈出視窗：當天紀錄 */}
-{isDayOpen && selectedDate && (
+{selectedDate && (
  <div
   className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8"
   onClick={() => setIsDayOpen(false)}
@@ -414,13 +415,8 @@ const App: React.FC = () => {
   </div>
 
   <button
-    type="button"
-    onClick={() => {
-  setIsDayOpen(false);
-  setIsFormOpen(true);
-}}
-
-    className="p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition"
+    onClick={() => setSelectedDate(null)}
+    className="p-2 text-stone-300 hover:text-stone-600 transition-colors"
     aria-label="Close"
   >
     <Icons.Close />
@@ -466,15 +462,18 @@ const App: React.FC = () => {
 
       {/* Footer actions */}
       <div className="pt-6">
-        <button
-          onClick={() => setIsFormOpen(true)}
-          className="w-full py-6 border-2 border-dashed border-stone-200 rounded-[2.5rem] text-stone-500 flex items-center justify-center gap-3 hover:border-stone-400 hover:text-stone-700 transition-all bg-white"
-        >
-          <span className="p-2 rounded-full bg-stone-100">
-            <Icons.Plus />
-          </span>
-          <span className="font-black text-sm tracking-[0.25em] uppercase">Add</span>
-        </button>
+       <button
+  onClick={() => setIsFormOpen(true)}
+  className="w-full py-6 border-2 border-dashed ..."
+>
+  <span className="p-2 rounded-full bg-stone-100">
+    <Icons.Plus />
+  </span>
+  <span className="font-black text-sm tracking-[0.25em] uppercase">
+    Add
+  </span>
+</button>
+
       </div>
     </div>
   </div>
