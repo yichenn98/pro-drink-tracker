@@ -274,10 +274,21 @@ const App: React.FC = () => {
                 <span className={`text-sm font-black ${isSelected ? 'text-stone-800' : isToday ? 'text-rose-400 underline underline-offset-8 decoration-2' : 'text-stone-400'}`}>
                   {day}
                 </span>
-                <div className="flex space-x-1 mt-2 h-4 items-center">
-                  {dayRecs.length >= 1 && <div style={{ backgroundColor: colors.dot }} className="w-1.5 h-1.5 rounded-full"></div>}
-                  {dayRecs.length >= 2 && <div style={{ backgroundColor: colors.dot }} className="w-1.5 h-1.5 rounded-full"></div>}
-                </div>
+                <div className="flex space-x-1 mt-2 h-4 items-center justify-center">
+  {dayRecs.length >= 3 ? (
+    <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+  ) : (
+    <>
+      {dayRecs.length >= 1 && (
+        <div style={{ backgroundColor: colors.dot }} className="w-1.5 h-1.5 rounded-full" />
+      )}
+      {dayRecs.length >= 2 && (
+        <div style={{ backgroundColor: colors.dot }} className="w-1.5 h-1.5 rounded-full" />
+      )}
+    </>
+  )}
+</div>
+
               </button>
             );
           })}
