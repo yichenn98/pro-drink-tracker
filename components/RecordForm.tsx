@@ -87,19 +87,26 @@ const RecordForm: React.FC<RecordFormProps> = ({
   const pillOff = 'bg-white text-stone-500 border-stone-200 hover:border-stone-400';
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-10 bg-white p-12 rounded-[3.5rem] card-shadow border border-stone-100 overflow-hidden max-h-[90vh] overflow-y-auto"
-    >
-      {/* ✕ 關閉按鈕 */}
+   <form
+  onSubmit={handleSubmit}
+  className="relative space-y-10 bg-white p-12 rounded-[3.5rem] card-shadow border border-stone-100 overflow-hidden max-h-[90vh] overflow-y-auto"
+>
+  {/* ✅ 右上角叉叉：永遠存在 */}
   <button
     type="button"
     onClick={onCancel}
-    className="absolute top-6 right-6 p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition"
     aria-label="Close"
+    className="absolute top-6 right-6 p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition active:scale-95"
   >
-    ✕
+    {/* 用你 App 裡那顆 Close SVG，直接貼過來 */}
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
   </button>
+
+  {/* 下面接你原本的內容 */}
+
       <div className="flex items-center justify-between">
         <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
           Store / 店名
