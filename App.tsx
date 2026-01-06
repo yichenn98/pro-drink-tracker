@@ -297,13 +297,16 @@ const App: React.FC = () => {
 
       {/* 底部按鈕區 */}
       <section className="grid grid-cols-2 gap-6">
-        <button onClick={() => setAnalyticsType('shop')} className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 space-y-3 text-left transition-all active:scale-95">
+        <button onClick={() => setAnalyticsType('shop')} 
+          style={{ backgroundColor: colors.blue }}className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 hover:brightness-[1.03]
+ space-y-3 text-left transition-all active:scale-95">
           <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">Clinic Favorite</p>
-          <p className="text-lg font-black text-stone-700 truncate">{favoriteShop.name}</p>
+          <p className="text-lg font-black text-stone-600 truncate">{favoriteShop.name}</p>
         </button>
-        <button onClick={() => setAnalyticsType('item')} className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 space-y-3 text-left transition-all active:scale-95">
+        <button onClick={() => setAnalyticsType('item')} style={{ backgroundColor: colors.sage }}className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 hover:brightness-[1.03]
+ space-y-3 text-left transition-all active:scale-95">
           <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">Addiction Item</p>
-          <p className="text-lg font-black text-stone-700 truncate">{favoriteItem.name}</p>
+          <p className="text-lg font-black text-stone-600 truncate">{favoriteItem.name}</p>
         </button>
       </section>
 
