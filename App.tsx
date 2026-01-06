@@ -370,18 +370,19 @@ const App: React.FC = () => {
       )}
 
       {/* 彈出視窗：填寫表單 */}
-      {isFormOpen && (
-        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
-          <div className="w-full max-w-lg animate-in slide-in-from-bottom duration-500">
-            <RecordForm
-              onSave={addRecord}
-              onCancel={() => setIsFormOpen(false)} // 或 setDayOpen(false) 看你用哪個 state
-  existingCount={0}
-  availableShops={shops}
-/>
-          </div>
-        </div>
-      )}
+{isFormOpen && (
+  <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
+    <div className="w-full max-w-lg animate-in slide-in-from-bottom duration-500">
+      <RecordForm
+        onSave={addRecord}
+        onCancel={() => setIsFormOpen(false)}
+        existingCount={getRecordsForDate(selectedDate || '').length}
+        availableShops={shops}
+      />
+    </div>
+  </div>
+)}
+
 {/* ✅ 彈出視窗：當天紀錄 */}
 {isDayOpen && selectedDate && (
   <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
