@@ -65,7 +65,7 @@ const IceIcon = () => (
 
 
 
-const DEFAULT_SHOPS = ['50嵐', '一沐日', '五桐號', '迷客夏'];
+const DEFAULT_SHOPS = ['50嵐', '一沐日', '五桐號', '迷客夏', '珍煮丹'];
 
 type DetailType = 'MONTHLY_DOSE' | 'MONTHLY_FEE' | 'ANNUAL_DOSE' | 'ANNUAL_FEE';
 
@@ -84,6 +84,8 @@ const App: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(getFormattedDate(new Date()));
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [analyticsType, setAnalyticsType] = useState<'shop' | 'item' | null>(null);
+  const [isDayOpen, setIsDayOpen] = useState(false);
+
 
   // ✅ 新增：四格明細的彈窗狀態
   const [detailType, setDetailType] = useState<DetailType | null>(null);
@@ -136,14 +138,7 @@ const App: React.FC = () => {
 
   const handleDateClick = (dateStr: string) => {
   setSelectedDate(dateStr);
-  const dayRecs = getRecordsForDate(dateStr);
-
-  // ✅ 只有「完全沒紀錄」才自動開新增
-  if (dayRecs.length === 0) {
-    setIsFormOpen(true);
-  } else {
-    setIsFormOpen(false); // 可選：確保不會維持開著
-  }
+  setIsDayOpen(true);
 };
 
 
@@ -289,77 +284,6 @@ const App: React.FC = () => {
         </div>
       </section>
 
-           {/* 診斷詳情 */}
-      {selectedDate && (
-        <div className="animate-in slide-in-from-bottom-8 duration-700 space-y-8">
-          <div className="bg-stone-700 p-10 rounded-[3.5rem] card-shadow text-white relative overflow-hidden">
-            <p className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-50 mb-2">
-              Clinical Diagnostic
-            </p>
-            <h4 className="text-3xl font-black tracking-tight">
-              {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', {
-                month: 'long',
-                day: 'numeric',
-                weekday: 'long'
-              })}
-            </h4>
-          </div>
-
-          <div className="space-y-6">
-            {getRecordsForDate(selectedDate).map((r, i) => (
-              <div
-                key={r.id}
-                className="bg-stone-100 p-8 rounded-[3rem] card-shadow border border-stone-200 flex justify-between items-center group transition-all"
-              >
-                <div className="space-y-1.5 flex-1 pr-4">
-                  <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">
-                    Prescription {i + 1}
-                  </p>
-
-                  <h5 className="font-black text-stone-800 text-xl">
-                    {r.shop} {r.item}
-                  </h5>
-
-                 <p className="mt-2 text-xs font-bold text-stone-400 tracking-wide">
-                   {r.sweetness} / {r.ice}
-                </p>
-               </div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-3xl font-black text-stone-700 tracking-tighter">
-                    ${r.price}
-                  </span>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeRecord(r.id);
-                    }}
-                    className="p-3 text-stone-200 hover:text-rose-400 transition-colors"
-                  >
-                    <Icons.Trash />
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            {/* ✅ 有紀錄時才顯示「新增」按鈕 */}
-            {getRecordsForDate(selectedDate).length > 0 && (
-              <button
-                onClick={() => setIsFormOpen(true)}
-                className="w-full py-10 border-2 border-dashed border-stone-200 rounded-[3rem] text-stone-400 flex items-center justify-center space-x-4 hover:border-stone-400 hover:text-stone-700 transition-all bg-white/40"
-              >
-                <div className="p-3 rounded-full bg-stone-100">
-                  <Icons.Plus />
-                </div>
-                <span className="font-black text-sm tracking-[0.3em] uppercase">
-                  Add Prescription
-                  
-                </span>
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* 底部按鈕區 */}
       <section className="grid grid-cols-2 gap-6">
         <button onClick={() => setAnalyticsType('shop')} className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 space-y-3 text-left transition-all active:scale-95">
@@ -443,6 +367,86 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
+{/* ✅ 彈出視窗：當天紀錄 */}
+{isDayOpen && selectedDate && (
+  <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
+    <div className="w-full max-w-lg bg-white rounded-t-[3.5rem] sm:rounded-[3.5rem] p-10 card-shadow max-h-[80vh] flex flex-col animate-in zoom-in duration-200">
+      {/* Header */}
+      <div className="flex justify-between items-start mb-6 shrink-0">
+        <div className="pr-4">
+          <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.4em]">Daily Records</p>
+          <h3 className="text-2xl font-black text-stone-700">
+            {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', {
+              month: 'long',
+              day: 'numeric',
+              weekday: 'long'
+            })}
+          </h3>
+          <p className="text-xs font-bold text-stone-400 mt-2">
+            共 {getRecordsForDate(selectedDate).length} 杯
+          </p>
+        </div>
+
+        <button
+          onClick={() => setIsDayOpen(false)}
+          className="p-2 text-stone-300"
+          aria-label="Close"
+        >
+          <Icons.Close />
+        </button>
+      </div>
+
+      {/* Body */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2 pb-2">
+        {getRecordsForDate(selectedDate).length === 0 ? (
+          <div className="p-6 bg-stone-50 rounded-[2rem] text-stone-400 font-bold">
+            今天還沒有紀錄 ✨
+          </div>
+        ) : (
+          getRecordsForDate(selectedDate).map((r, i) => (
+            <div key={r.id} className="bg-stone-50 p-6 rounded-[2rem] flex justify-between items-center">
+              <div className="space-y-1 pr-4">
+                <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">
+                  Prescription {i + 1}
+                </p>
+                <p className="font-black text-stone-700">
+                  {r.shop} {r.item}
+                </p>
+                <p className="text-xs font-bold text-stone-400">
+                  {r.sweetness} / {r.ice}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="font-black text-stone-700">${Number(r.price) || 0}</span>
+                <button
+                  onClick={() => removeRecord(r.id)}
+                  className="p-2 text-stone-300 hover:text-rose-400 transition-colors"
+                  aria-label="Delete"
+                >
+                  <Icons.Trash />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Footer actions */}
+      <div className="pt-6">
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="w-full py-6 border-2 border-dashed border-stone-200 rounded-[2.5rem] text-stone-500 flex items-center justify-center gap-3 hover:border-stone-400 hover:text-stone-700 transition-all bg-white"
+        >
+          <span className="p-2 rounded-full bg-stone-100">
+            <Icons.Plus />
+          </span>
+          <span className="font-black text-sm tracking-[0.25em] uppercase">Add</span>
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       <footer className="pt-12 text-center">
         <p className="text-[10px] text-stone-400 uppercase tracking-[0.6em] font-black">Tea Addiction Clinic &copy; 2026</p>
