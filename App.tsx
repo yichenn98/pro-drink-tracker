@@ -293,14 +293,6 @@ const App: React.FC = () => {
       {selectedDate && (
         <div className="animate-in slide-in-from-bottom-8 duration-700 space-y-8">
           <div className="bg-stone-700 p-10 rounded-[3.5rem] card-shadow text-white relative overflow-hidden">
-            <p className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-50 mb-2">Clinical Diagnostic</p>
-            <h4 className="text-3xl font-black tracking-tight">
-              {new Date(parseDateString(selectedDate)).toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' })}
-            </h4>
-          </div>      {/* 診斷詳情 */}
-      {selectedDate && (
-        <div className="animate-in slide-in-from-bottom-8 duration-700 space-y-8">
-          <div className="bg-stone-700 p-10 rounded-[3.5rem] card-shadow text-white relative overflow-hidden">
             <p className="text-[10px] font-bold tracking-[0.5em] uppercase opacity-50 mb-2">
               Clinical Diagnostic
             </p>
