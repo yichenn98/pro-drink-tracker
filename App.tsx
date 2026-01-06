@@ -309,18 +309,18 @@ const App: React.FC = () => {
             {getRecordsForDate(selectedDate).map((r, i) => (
               <div
                 key={r.id}
-                className="bg-white p-8 rounded-[3rem] card-shadow border border-stone-100 flex justify-between items-center group transition-all"
+                className="bg-stone-100 p-8 rounded-[3rem] card-shadow border border-stone-200 flex justify-between items-center group transition-all"
               >
                 <div className="space-y-1.5 flex-1 pr-4">
                   <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">
                     Prescription {i + 1}
                   </p>
 
-                  <h5 className="font-black text-stone-700 text-xl">
+                  <h5 className="font-black text-stone-800 text-xl">
                     {r.shop} {r.item}
                   </h5>
 
-                  <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200">
+                  <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-stone-100">
                     <span className="inline-flex items-center gap-1 text-stone-700 font-black text-sm">
                       <span className="text-stone-400">
                         <SugarIcon />
