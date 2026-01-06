@@ -401,13 +401,7 @@ const App: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => setIsDayOpen(false)}
-          className="p-2 text-stone-300"
-          aria-label="Close"
-        >
-          <Icons.Close />
-        </button>
+      
       </div>
 
       {/* Body */}
