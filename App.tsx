@@ -138,7 +138,7 @@ const App: React.FC = () => {
 
   const handleDateClick = (dateStr: string) => {
   setSelectedDate(dateStr);
-  setIsDayOpen(true);   // ✅ 點日期只選日期，順便確保日彈窗不會自己跑出來
+     // ✅ 點日期只選日期，順便確保日彈窗不會自己跑出來
 };
 
 
@@ -385,7 +385,7 @@ const App: React.FC = () => {
 )}
 
 {/* ✅ 彈出視窗：當天紀錄 */}
-{selectedDate && (
+{isDayOpen && selectedDate && (
  <div
   className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8"
   onClick={() => setIsDayOpen(false)}
