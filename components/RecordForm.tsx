@@ -64,21 +64,24 @@ const RecordForm: React.FC<RecordFormProps> = ({
   const [priceStr, setPriceStr] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!shop || !item) return;
+  e.preventDefault();
+  if (!shop || !item) return;
 
-    if (existingCount === 0 && sweetness !== '無糖') {
-      alert('別再喝了！！減肥減肥減肥！！！😤');
-    }
+  if (existingCount === 0 && sweetness !== '無糖') {
+    alert('別再喝了！！減肥減肥減肥！！！😤');
+  }
 
-    onSave({
-      shop,
-      item,
-      ice,
-      sweetness,
-      price: Number(priceStr) || 0
-    });
-  };
+  onSave({
+    shop,
+    item,
+    ice,
+    sweetness,
+    price: Number(priceStr) || 0
+  });
+
+  onCancel(); // ✅ 存完自動關掉視窗
+};
+
 
   // ✅ 甜度/冰塊按鈕統一尺寸（字 + 框都小一點）
   const pillBase =
