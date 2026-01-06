@@ -30,13 +30,16 @@ const SugarIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M12 2v20" />
-    <path d="M6 6l12 12" />
-    <path d="M18 6L6 18" />
+    <path d="M8 2v4" />
+    <path d="M16 2v4" />
+    <path d="M7 6h10" />
+    <path d="M6 10h12" />
+    <path d="M5 14h14" />
+    <path d="M4 18h16" />
   </svg>
 );
 
@@ -48,51 +51,17 @@ const IceIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <polygon points="12 2 22 12 12 22 2 12 12 2" />
+    <path d="M12 2v20" />
+    <path d="M2 12h20" />
+    <path d="M4.9 4.9l14.2 14.2" />
+    <path d="M19.1 4.9L4.9 19.1" />
   </svg>
 );
 
-
-const SugarIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="text-stone-400"
-    aria-hidden="true"
-  >
-    <path
-      d="M12 2C12 2 6 9 6 13.5C6 17.0899 8.91015 20 12.5 20C16.0899 20 19 17.0899 19 13.5C19 9 12 2 12 2Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const IceIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="text-stone-400"
-    aria-hidden="true"
-  >
-    <path
-      d="M12 2v20M4 6l16 12M20 6L4 18"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 
 
