@@ -288,6 +288,12 @@ const App: React.FC = () => {
     </>
   )}
 </div>
+<button
+  onClick={() => setIsFormOpen(false)}
+  className="p-2 text-stone-300"
+>
+  <Icons.Close />
+</button>
 
               </button>
             );
