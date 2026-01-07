@@ -353,8 +353,9 @@ const App: React.FC = () => {
   </div>
 
   <section className="grid grid-cols-2 gap-6">
-    <button
+   <button
   onClick={() => setAnalyticsType('shop')}
+  style={{ backgroundColor: colors.blue }}
   className="
     bg-white
     p-8
@@ -368,18 +369,27 @@ const App: React.FC = () => {
     flex flex-col
   "
 >
+  {/* 英文 */}
   <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
-    年度最愛店家
+    Clinic Favorite
   </p>
 
+  {/* 中文 */}
+  <p className="text-xs font-bold text-stone-400 mt-1">
+    年度私藏愛店
+  </p>
+
+  {/* 主要內容（往下對齊，留呼吸） */}
   <p className="mt-4 text-lg font-black text-stone-600 truncate">
     {favoriteShop.name}
   </p>
 </button>
 
 
-    <button
+
+   <button
   onClick={() => setAnalyticsType('item')}
+  style={{ backgroundColor: colors.sage }}
   className="
     bg-white
     p-8
@@ -393,14 +403,22 @@ const App: React.FC = () => {
     flex flex-col
   "
 >
+  {/* 英文 */}
   <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
-    年度最愛飲品
+    Addiction Item
   </p>
 
+  {/* 中文 */}
+  <p className="text-xs font-bold text-stone-400 mt-1">
+    年度飲品ONE PICK
+  </p>
+
+  {/* 主要內容 */}
   <p className="mt-4 text-lg font-black text-stone-600 truncate">
     {favoriteItem.name}
   </p>
 </button>
+
 
   </section>
 </section>
