@@ -121,17 +121,31 @@ const App: React.FC = () => {
   const prevMonth = () => setCurrentViewDate(new Date(currentViewDate.getFullYear(), currentViewDate.getMonth() - 1, 1));
   const nextMonth = () => setCurrentViewDate(new Date(currentViewDate.getFullYear(), currentViewDate.getMonth() + 1, 1));
 
-  const addRecord = (newDrink: Omit<DrinkRecord, 'id' | 'date'>) => {
-    if (!selectedDate) return;
-    const record: DrinkRecord = { ...newDrink, id: crypto.randomUUID(), date: selectedDate };
+ const addRecord = (newDrink: Omit<DrinkRecord, 'id' | 'date'>) => {
+  if (!selectedDate) return;
 
-    if (!shops.includes(newDrink.shop)) {
-      setShops(prev => [...prev, newDrink.shop]);
-    }
-
-    setRecords(prev => [...prev, record]);
-    setIsFormOpen(false);
+  const record: DrinkRecord = {
+    ...newDrink,
+    id: crypto.randomUUID(),
+    date: selectedDate
   };
+
+  if (!shops.includes(newDrink.shop)) {
+    setShops(prev => [...prev, newDrink.shop]);
+  }
+
+  setRecords(prev => [...prev, record]);
+
+  // ✅ 關掉「新增表單」
+  setIsFormOpen(false);
+
+  // ✅ 關掉「Day Modal」
+  setIsDayOpen(false);
+
+  // ✅（可選）也把選到的日期清掉，避免仍顯示選取狀態或其他依賴 selectedDate 的 UI
+  // setSelectedDate(null);
+};
+
 
   const removeRecord = (id: string) => setRecords(prev => prev.filter(r => r.id !== id));
   const getRecordsForDate = (dateStr: string) => records.filter(r => r.date === dateStr);
@@ -458,8 +472,11 @@ const App: React.FC = () => {
 
       {/* Footer actions */}
       <div className="pt-6">
-        <button
-          onClick={() => setIsFormOpen(true)}
+       <button
+  onClick={() => {
+    setIsFormOpen(true);
+    setIsDayOpen(false); // ✅ 先收起 Day Modal
+  }}
           className="w-full py-6 border-2 border-dashed border-stone-200 rounded-[2.5rem] text-stone-500 flex items-center justify-center gap-3 hover:border-stone-400 hover:text-stone-700 transition-all bg-white"
         >
           <span className="p-2 rounded-full bg-stone-100">
