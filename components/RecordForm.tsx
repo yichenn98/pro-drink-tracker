@@ -89,27 +89,33 @@ const RecordForm: React.FC<RecordFormProps> = ({
   const pillOn = 'bg-stone-600 text-white border-stone-600 shadow-sm';
   const pillOff = 'bg-white text-stone-500 border-stone-200 hover:border-stone-400';
 
-  return (
-   <form
-  onSubmit={handleSubmit}
-  className="relative space-y-10 bg-white p-12 rounded-[3.5rem] card-shadow border border-stone-100 overflow-hidden max-h-[90vh] overflow-y-auto"
->
-  {/* ✅ 右上角叉叉：永遠存在 */}
-  <button
-    type="button"
-    onClick={onCancel}
-    aria-label="Close"
-    className="absolute top-6 right-6 p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition active:scale-95"
+ return (
+  <form
+    onSubmit={handleSubmit}
+    className="relative bg-white rounded-[3.5rem] card-shadow border border-stone-100
+               max-h-[85vh] flex flex-col overflow-hidden"
   >
-    {/* 用你 App 裡那顆 Close SVG，直接貼過來 */}
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  </button>
+    {/* ✅ 右上角叉叉：永遠固定 */}
+    <button
+      type="button"
+      onClick={onCancel}
+      aria-label="Close"
+      className="absolute top-6 right-6 z-10 p-2 rounded-full text-stone-300 hover:text-stone-600 hover:bg-stone-100 transition active:scale-95"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
 
-  {/* 下面接你原本的內容 */}
+    {/* ✅ 只有這裡可以滾 */}
+    <div className="flex-1 overflow-y-auto overscroll-contain p-12 space-y-10 custom-scrollbar">
+      {/* ====== 把你原本的內容全部放進這裡 ======
+          從「Store / 店名」開始
+          到「Medical Fee」那一大段結束
+      */}
 
+      {/* 例如： */}
       <div className="flex items-center justify-between">
         <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
           Store / 店名
@@ -121,131 +127,23 @@ const RecordForm: React.FC<RecordFormProps> = ({
         )}
       </div>
 
-      <div className="space-y-4">
-        <div className="relative">
-          <input
-            list="shop-options"
-            type="text"
-            value={shop}
-            onChange={(e) => setShop(e.target.value)}
-            className="w-full bg-stone-50/80 p-6 rounded-2xl outline-none text-stone-700 placeholder:text-stone-300 border border-transparent focus:border-stone-200 transition-all text-lg"
-            placeholder="點選或輸入店名..."
-          />
-          <datalist id="shop-options">
-            {availableShops.map((s) => (
-              <option key={s} value={s} />
-            ))}
-          </datalist>
+      {/* ⚠️ 你後面所有 input、甜度、冰塊、金額區塊照貼在這裡（跟你原本一樣） */}
+      {/* ...（把你原本 JSX 繼續貼在這）... */}
 
-          {/* quick-select buttons */}
-          <div className="mt-4 flex flex-wrap gap-2 max-h-24 overflow-y-auto pr-2 custom-scrollbar">
-            {availableShops.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setShop(s)}
-                className={`px-5 py-2 text-[10px] rounded-full border transition-all font-bold tracking-wider ${
-                  shop === s
-                    ? 'bg-stone-500 text-white border-stone-500 shadow-sm'
-                    : 'bg-stone-50 text-stone-400 border-stone-100 hover:border-stone-200'
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+    </div>
 
-      <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
-        Item / 品項
-      </h3>
-      <input
-        type="text"
-        value={item}
-        onChange={(e) => setItem(e.target.value)}
-        className="w-full bg-stone-50/80 p-6 rounded-2xl outline-none text-stone-700 placeholder:text-stone-300 border border-transparent focus:border-stone-200 transition-all text-lg"
-        placeholder="藥方品項..."
-      />
+    {/* ✅ 底部固定：Save 不跟著滾 */}
+    <div className="shrink-0 p-12 pt-0">
+      <button
+        type="submit"
+        className="w-full py-8 px-8 bg-stone-700 text-white rounded-[2.2rem] font-black text-sm uppercase tracking-[0.5em] shadow-2xl shadow-stone-200 hover:bg-stone-800 transition-all active:scale-95 leading-none"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+);
 
-      {/* 甜度 */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <SugarIcon />
-          <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
-            Sugar / 甜度
-          </h3>
-        </div>
-
-        <div className="flex flex-wrap gap-3">
-          {SWEETNESS_LEVELS.map((level) => (
-            <button
-              key={level}
-              type="button"
-              onClick={() => setSweetness(level as SweetnessLevel)}
-              className={[pillBase, sweetness === level ? pillOn : pillOff].join(' ')}
-            >
-              {level}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 冰塊 */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <IceIcon />
-          <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
-            Ice / 冰量
-          </h3>
-        </div>
-
-        <div className="flex flex-wrap gap-3">
-          {ICE_LEVELS.map((level) => (
-            <button
-              key={level}
-              type="button"
-              onClick={() => setIce(level as IceLevel)}
-              className={[pillBase, ice === level ? pillOn : pillOff].join(' ')}
-            >
-              {level}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-stone-100/50 p-10 rounded-[3rem] flex justify-between items-center mt-6">
-        <div>
-          <p className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.3em] mb-1">
-            Medical Fee
-          </p>
-          <p className="text-base font-bold text-stone-600">診察費</p>
-        </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-stone-400 font-black text-2xl">$</span>
-          <input
-            type="number"
-            value={priceStr}
-            onChange={(e) => setPriceStr(e.target.value)}
-            className="w-28 bg-transparent text-right text-5xl font-black text-stone-700 outline-none placeholder:text-stone-200"
-            placeholder="0"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col space-y-4 pt-8">
-        <button
-          type="submit"
-          className="w-full py-8 px-8 bg-stone-700 text-white rounded-[2.2rem] font-black text-sm uppercase tracking-[0.5em] shadow-2xl shadow-stone-200 hover:bg-stone-800 transition-all active:scale-95 leading-none"
-        >
-          Save
-        </button>
-    
-
-
-      </div>
-    </form>
-  );
 };
 
 export default RecordForm;
