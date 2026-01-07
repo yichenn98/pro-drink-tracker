@@ -387,8 +387,11 @@ const App: React.FC = () => {
 
       {/* 彈出視窗：填寫表單 */}
 {isFormOpen && (
-  <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl p-0 sm:p-8">
-    <div className="w-full max-w-lg animate-in slide-in-from-bottom duration-500">
+  <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-stone-900/40 backdrop-blur-xl">
+    <div
+      className="w-full max-w-lg bg-white rounded-t-[3.5rem] sm:rounded-[3.5rem]
+                 max-h-[85vh] flex flex-col animate-in slide-in-from-bottom duration-500"
+    >
       <RecordForm
         onSave={addRecord}
         onCancel={() => setIsFormOpen(false)}
@@ -398,6 +401,7 @@ const App: React.FC = () => {
     </div>
   </div>
 )}
+
 
 {/* ✅ 彈出視窗：當天紀錄 */}
 {isDayOpen && selectedDate && (
@@ -435,7 +439,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Body */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2 pb-2">
+      <div className="flex-1 overflow-y-auto overscroll-contain custom-scrollbar space-y-4 pr-2 pb-2">
         {getRecordsForDate(selectedDate).length === 0 ? (
           <div className="p-6 bg-stone-50 rounded-[2rem] text-stone-400 font-bold">
             今天還沒有紀錄 ✨
