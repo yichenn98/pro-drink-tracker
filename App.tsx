@@ -356,7 +356,19 @@ const App: React.FC = () => {
     <button
       onClick={() => setAnalyticsType('shop')}
       style={{ backgroundColor: colors.blue }}
-      className="p-8 rounded-[3rem] card-shadow border border-stone-100 hover:brightness-[1.03] space-y-3 text-left transition-all active:scale-95"
+     className="
+  bg-white
+  p-8
+  rounded-[3rem]
+  card-shadow
+  border border-stone-100
+  hover:brightness-[1.03]
+  text-left
+  transition-all
+  active:scale-95
+  flex flex-col justify-start
+"
+
     >
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
@@ -376,7 +388,19 @@ const App: React.FC = () => {
     <button
       onClick={() => setAnalyticsType('item')}
       style={{ backgroundColor: colors.sage }}
-      className="p-8 rounded-[3rem] card-shadow border border-stone-100 hover:brightness-[1.03] space-y-3 text-left transition-all active:scale-95"
+      className="
+  bg-white
+  p-8
+  rounded-[3rem]
+  card-shadow
+  border border-stone-100
+  hover:brightness-[1.03]
+  text-left
+  transition-all
+  active:scale-95
+  flex flex-col justify-start
+"
+
     >
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
