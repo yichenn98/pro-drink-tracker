@@ -206,7 +206,7 @@ const RecordForm: React.FC<RecordFormProps> = ({
           <div className="flex items-center gap-2">
             <IceIcon />
             <h3 className="text-stone-500 font-bold tracking-[0.25em] text-[11px] uppercase">
-              Ice / 冰量
+              Ice / 冰塊
             </h3>
           </div>
 
