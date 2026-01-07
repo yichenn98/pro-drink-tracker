@@ -393,11 +393,15 @@ const App: React.FC = () => {
                  max-h-[85vh] flex flex-col animate-in slide-in-from-bottom duration-500"
     >
       <RecordForm
-        onSave={addRecord}
-        onCancel={() => setIsFormOpen(false)}
-        existingCount={getRecordsForDate(selectedDate || '').length}
-        availableShops={shops}
-      />
+  onSave={(record) => {
+    addRecord(record);
+    setIsDayOpen(false); // ✅ 存完也關 Day Modal
+  }}
+  onCancel={() => setIsFormOpen(false)}
+  existingCount={getRecordsForDate(selectedDate || '').length}
+  availableShops={shops}
+/>
+
     </div>
   </div>
 )}
@@ -446,31 +450,44 @@ const App: React.FC = () => {
           </div>
         ) : (
           getRecordsForDate(selectedDate).map((r, i) => (
-            <div key={r.id} className="bg-stone-50 p-6 rounded-[2rem] flex justify-between items-center">
-              <div className="space-y-1 pr-4">
-                <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">
-                  Prescription {i + 1}
-                </p>
-                <p className="font-black text-stone-700">
-                  {r.shop} {r.item}
-                </p>
-                <p className="text-xs font-bold text-stone-400">
-                  {r.sweetness} / {r.ice}
-                </p>
-              </div>
+  <div
+    key={r.id}
+    className="bg-stone-50 p-6 rounded-[2rem] flex justify-between items-center"
+  >
+    {/* 左邊：文字 */}
+    <div className="space-y-1 pr-4">
+      <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.25em]">
+        Prescription {i + 1}
+      </p>
+      <p className="font-black text-stone-700">
+        {r.shop} {r.item}
+      </p>
+      <p className="text-xs font-bold text-stone-400">
+        {r.sweetness} / {r.ice}
+      </p>
+    </div>
 
-              <div className="flex items-center gap-3">
-                <span className="font-black text-stone-700">${Number(r.price) || 0}</span>
-                <button
-                  onClick={() => removeRecord(r.id)}
-                  className="p-2 text-stone-300 hover:text-rose-400 transition-colors"
-                  aria-label="Delete"
-                >
-                  <Icons.Trash />
-                </button>
-              </div>
-            </div>
-          ))
+    {/* 右邊：金額 + 刪除 */}
+    <div className="flex items-center gap-3">
+      <span className="font-black text-stone-700">
+        ${Number(r.price) || 0}
+      </span>
+
+      {/* ✅ 刪除按鈕就在這 */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation(); // ⭐ 非常重要
+          removeRecord(r.id);
+        }}
+        className="p-2 text-stone-300 hover:text-rose-400 transition-colors"
+        aria-label="Delete"
+      >
+        <Icons.Trash />
+      </button>
+    </div>
+  </div>
+))
+
         )}
       </div>
 
