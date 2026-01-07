@@ -410,7 +410,7 @@ const App: React.FC = () => {
 
   {/* 中文 */}
   <p className="text-xs font-bold text-stone-400 mt-1">
-    年度飲品ONE PICK
+    年度處方飲品
   </p>
 
   {/* 主要內容 */}
