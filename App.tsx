@@ -354,86 +354,54 @@ const App: React.FC = () => {
 
   <section className="grid grid-cols-2 gap-6">
     <button
-      onClick={() => setAnalyticsType('shop')}
-      style={{ backgroundColor: colors.blue }}
-     className="
-  bg-white
-  p-8
-  rounded-[3rem]
-  card-shadow
-  border border-stone-100
-  hover:brightness-[1.03]
-  text-left
-  transition-all
-  active:scale-95
-  flex flex-col justify-start
-"
+  onClick={() => setAnalyticsType('shop')}
+  className="
+    bg-white
+    p-8
+    rounded-[3rem]
+    card-shadow
+    border border-stone-100
+    hover:brightness-[1.03]
+    text-left
+    transition-all
+    active:scale-95
+    flex flex-col
+  "
+>
+  <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
+    年度最愛店家
+  </p>
 
-    >
-      <div className="flex items-center justify-between">
-        <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
-          Clinic Favorite
-        </p>
-        {/* 🩷 愛心小點綴 */}
-       
+  <p className="mt-4 text-lg font-black text-stone-600 truncate">
+    {favoriteShop.name}
+  </p>
+</button>
 
-      </div>
-
-      <p className="text-base font-black text-stone-600">年度最愛店家 </p>
-      <p className="text-lg font-black text-stone-700 truncate">
-        {favoriteShop.name}
-      </p>
-    </button>
 
     <button
-      onClick={() => setAnalyticsType('item')}
-      style={{ backgroundColor: colors.sage }}
-      className="
-  bg-white
-  p-8
-  rounded-[3rem]
-  card-shadow
-  border border-stone-100
-  hover:brightness-[1.03]
-  text-left
-  transition-all
-  active:scale-95
-  flex flex-col justify-start
-"
-
-    >
-      <div className="flex items-center justify-between">
-        <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
-          Addiction Item
-        </p>
-        {/* 👑 小皇冠點綴（跟標題呼應） */}
-       <svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="18"
-  height="18"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="white"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  className="opacity-90"
+  onClick={() => setAnalyticsType('item')}
+  className="
+    bg-white
+    p-8
+    rounded-[3rem]
+    card-shadow
+    border border-stone-100
+    hover:brightness-[1.03]
+    text-left
+    transition-all
+    active:scale-95
+    flex flex-col
+  "
 >
-  {/* 王冠 */}
-  <path d="M3 7l4 4 5-7 5 7 4-4" />
-  <path d="M5 21h14" />
-  {/* 醫療十字 */}
-  <path d="M12 11v4" />
-  <path d="M10 13h4" />
-</svg>
+  <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em]">
+    年度最愛飲品
+  </p>
 
-      </div>
+  <p className="mt-4 text-lg font-black text-stone-600 truncate">
+    {favoriteItem.name}
+  </p>
+</button>
 
-      <p className="text-base font-black text-stone-600">飲料ONE PICK</p>
-      <p className="text-lg font-black text-stone-700 truncate">
-        {favoriteItem.name}
-      </p>
-    </button>
   </section>
 </section>
 
