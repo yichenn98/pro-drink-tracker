@@ -414,9 +414,20 @@ const App: React.FC = () => {
   </p>
 
   {/* 主要內容 */}
-  <p className="mt-4 text-lg font-black text-stone-600 truncate">
-    {favoriteItem.name}
-  </p>
+  <p
+  className="
+    mt-3
+    text-lg
+    font-black
+    text-stone-600
+    whitespace-normal
+    break-words
+    leading-snug
+  "
+>
+  {favoriteItem.name}
+</p>
+
 </button>
 
 
